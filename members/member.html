@@ -10,29 +10,59 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <style>
-        .d-flex {
-            height: 60px;
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f5f5f5;
         }
 
-        .d-flex>ul {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            >button {
-                height: 30px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-            }
+        header {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
-
 
         .main {
             display: flex;
             flex-direction: row;
             justify-content: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 48px;
+            color: #343a40;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            margin: 20px auto;
+            max-width: 1400px;
+        }
+
+        .title-section {
+            background-color: #ecf1b7;
+            color: black;
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .content-section {
+            padding: 23px;
+            color: black;
+        }
+
+        .btn-custom {
+            background-color: white;
+            color: black;
+            border: 1px solid #ced4da;
+        }
+
+        .btn-custom:hover {
+            background-color: #e2e6ea;
         }
 
         .postingbox {
@@ -122,22 +152,21 @@
         }
     </style>
     <script type="module">
-        // Firebase SDK 라이브러리 가져오기
+
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-        import { collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { collection, addDoc, setDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
         import { getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-
 
         // For Firebase JS SDK v7.20.0 and later, measurementId is optional
         const firebaseConfig = {
-            apiKey: "AIzaSyD5KjXj_DDQVTSQlGZJfjB_cdERQx2svV4",
-            authDomain: "sparta-8ec16.firebaseapp.com",
-            projectId: "sparta-8ec16",
-            storageBucket: "sparta-8ec16.appspot.com",
-            messagingSenderId: "840271196680",
-            appId: "1:840271196680:web:c8b663ed753803623017bd",
-            measurementId: "G-LGLPG24ELE"
+            apiKey: "AIzaSyChB2cWVFFqMKbAeNth9OOfln9qsyoe-0c",
+            authDomain: "sparta-kwon.firebaseapp.com",
+            projectId: "sparta-kwon",
+            storageBucket: "sparta-kwon.appspot.com",
+            messagingSenderId: "205155757728",
+            appId: "1:205155757728:web:392eb31f61b51af5ad63c5",
+            measurementId: "G-2PYRVDC9G4"
         };
 
         // Firebase 인스턴스 초기화
@@ -145,35 +174,23 @@
         const db = getFirestore(app);
 
         $("#postingbtn").click(async function () {
-            let doc = {'name':'bob','age':30};
+            let image = $('#image').val();
+            let name = $('#name').val();
+            let mbti = $('#mbti').val();
+            let merit = $('#merit').val();
+            let collabstyle = $('#collabstyle').val();
+            let blogadr = $('#blogadr').val();
+            let doc = {
+                'image': image,
+                'name': name,
+                'mbti': mbti,
+                'merit': merit,
+                'collabstyle': collabstyle,
+                'blogadr': blogadr,
+            };
             await addDoc(collection(db, "chickens"), doc);
         })
 
-        /*
-        function loadFile(input) {
-            var file = input.files[0];	//선택된 파일 가져오기
-
-            //미리 만들어 놓은 div에 text(파일 이름) 추가
-            var name = document.getElementById('fileName');
-            name.textContent = file.name;
-
-            //새로운 이미지 div 추가
-            var newImage = document.createElement("img");
-            newImage.setAttribute("class", 'img');
-
-            //이미지 source 가져오기
-            newImage.src = URL.createObjectURL(file);
-
-            newImage.style.width = "70%";
-            newImage.style.height = "70%";
-            newImage.style.visibility = "hidden";   //버튼을 누르기 전까지는 이미지를 숨긴다
-            newImage.style.objectFit = "contain";
-
-            //이미지를 image-show div에 추가
-            var container = document.getElementById('image-show');
-            container.appendChild(newImage);
-        };
-        */
         function makeCard() {
             let image = $('#image').val();
             let name = $('#name').val();
@@ -216,20 +233,17 @@
 </head>
 
 <body>
-    <div class="header">
-        <header class="d-flex flex-wrap justify-content-center py-1 mb-4 border-bottom">
-            <a href="#"
-                class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-                <span style="font-size : 30px" , class="nav-link px-2 text-dark">코딩 치킨</span>
-            </a>
-
-            <ul class="nav nav-pills">
-                <button type="button" class="btn btn-light me-2">팀 소개</button>
-                <button type="button" class="btn btn-light">멤버 소개</button>
-            </ul>
-        </header>
-    </div>
-    <div class="main">
+    <header>
+        <div class="d-flex justify-content-between align-items-center">
+            <h1>코딩치킨</h1>
+            <div class="button-container">
+                <button type="button" onclick="location.href='../CodingChicken_TeamPage/CodingChicken_TeamPage.html'"
+                    class="btn btn-light me-2">팀 소개</button>
+                <button type="button" onclick="location.href='./member.html'" class="btn btn-light">멤버 소개</button>
+            </div>
+        </div>
+    </header>
+    <div class="container">
         <div class="postingbox">
             <!--
             <button type = "button" class="photobox">
@@ -266,7 +280,7 @@
                 <input type="email" class="form-control" id="blogadr" placeholder="name@example.com">
                 <label for="floatingInput">블로그 주소</label>
             </div>
-            <button type="button" class="btn btn-dark" id="postingbtn">등록</button>
+            <button type="button" id="postingbtn" class="btn btn-dark" id="postingbtn">등록</button>
         </div>
 
         <div class="membercards">
