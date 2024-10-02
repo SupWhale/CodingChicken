@@ -100,6 +100,7 @@
             }
         }
 
+       
 
         .postingbox>button {
             width: 100%;
@@ -136,7 +137,7 @@
                 height: 15px;
                 margin-right: 5px;
                 margin-top: 5px;
-            }
+            }    
         }
 
         .card-body {
@@ -146,41 +147,36 @@
             }
         }
 
+        .deletebtn{
+                background-image: url("./delete.png");
+                background-repeat: no-repeat;
+                background-position: center center;
+                background-size: cover; 
+                background-color: rgba(0, 0, 0, 0);
+                border: none;
+                width : 15px;
+                height: 15px;
+            }
+        .editbtn{
+               background-image: url("./edit.png");
+               background-repeat: no-repeat;
+               background-position: center center;
+               background-size: cover; 
+               background-color: rgba(0, 0, 0, 0);
+               border: none;
+               width : 15px;
+               height: 15px;
+            }
         hr {
             margin-top: 0.4em;
             margin-bottom: 0.4em;
         }
     </style>
     <script type="module">
-        /*
-        function loadFile(input) {
-            var file = input.files[0];	//선택된 파일 가져오기
-
-            //미리 만들어 놓은 div에 text(파일 이름) 추가
-            var name = document.getElementById('fileName');
-            name.textContent = file.name;
-
-            //새로운 이미지 div 추가
-            var newImage = document.createElement("img");
-            newImage.setAttribute("class", 'img');
-
-            //이미지 source 가져오기
-            newImage.src = URL.createObjectURL(file);
-
-            newImage.style.width = "70%";
-            newImage.style.height = "70%";
-            newImage.style.visibility = "hidden";   //버튼을 누르기 전까지는 이미지를 숨긴다
-            newImage.style.objectFit = "contain";
-
-            //이미지를 image-show div에 추가
-            var container = document.getElementById('image-show');
-            container.appendChild(newImage);
-        };
-        */
         // Firebase SDK 라이브러리 가져오기
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-        import { collection, addDoc, setDoc, doc, updateDoc  } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { collection, addDoc, setDoc, doc, updateDoc, deleteDoc  } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
         import { getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
         // Firebase 구성 정보 설정
@@ -198,43 +194,121 @@
         // Firebase 인스턴스 초기화
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        function makeCard() {
+
+        //파이어베이스 수정/저장 처리
+        $("#postingbtn").click(async function () {
+            let docId = $('#docId').val();
             let image = $('#image').val();
             let name = $('#name').val();
             let mbti = $('#mbti').val();
             let merit = $('#merit').val();
             let collabstyle = $('#collabstyle').val();
             let blogadr = $('#blogadr').val();
+            
+            let result = {
+                'image': image,
+                'name': name,
+                'mbti': mbti,
+                'merit': merit,
+                'collabstyle': collabstyle,
+                'blogadr': blogadr,
+            };
+ 
+            if(docId == null || docId == ""){
+                await addDoc(collection(db, "chickens"), result);
+            }else if(docId != null) {
+                const nweetTextRef = doc(db, "chickens", docId);
+                await updateDoc(nweetTextRef,  result);
+            }
+            alert('저장완료!');
+            window.location.reload();
+        });
+
+        //파이어베이스 삭제
+        $('#allcard').on('click', '.deletebtn', async function () {
+            let col = $(this).closest('.col');
+            let id = col.attr('id');
+            await deleteDoc(doc(db, "chickens", id));
+            alert('삭제 완료!');
+            window.location.reload();
+        });
+        
+        //수정 정보 전달
+        $('#allcard').on('click', '.editbtn', async function () {
+            let col = $(this).closest('.col');
+            let id = col.attr('id');
+            let result = [];
+
+            result['image'] = col.find('.card-img-top').attr('src');
+
+            for(let i=1; i<11; i+=2){
+               let text = col.find('span:eq('+i+')').text();
+               let Id = col.find('span:eq('+i+')').attr('id');
+               result[Id] = text;
+            }
+            
+            $('#docId').val(id);
+            $('#image').val(result.image);
+            $('#name').val(result.name);
+            $('#mbti').val(result.mbti);
+            $('#merit').val(result.merit);
+            $('#collabstyle').val(result.collabstyle);
+            $('#blogadr').val(result.blogadr);
+        });
+
+        //맴버카드 정보 불러오기
+        let docs = await getDocs(collection(db, "chickens"));
+            docs.forEach((doc) => {
+
+            let row = doc.data();
+            let id = doc.id;
+            let image = row['image'];
+            let name = row['name'];
+            let mbti = row['mbti'];
+            let merit = row['merit'];
+            let collabstyle = row['collabstyle'];
+            let blogadr = row['blogadr'];
+            
+            if(image == null || image == ""){
+                image = "./default.png";
+            }
 
             let temp_html = `
-                   <div class="col">
-                    <div class="card">
-                        <div class="card-top">
-                            <img src="edit.png" class="topicon" alt="..." onclick="">
-                            <img src="delete.png" class="topicon" alt="..." onclick="">
+                   <div class="col" id="${id}">
+                    <div class="card" id="${id}">
+                        <div class="card-top"  id="${id}">
+                            <button type="button" class="editbtn">
+                            </button>
+                            <button type="button" class="deletebtn">
+                            </button>
                         </div>
                         <img src="${image}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <img src="egg.png" class="egg">
-                            <span class="card-text">이름 : ${name}</span>
+                            <span class="card-text">이름: </span>
+                            <span class="card-text" id="name" value="${name}">${name}</span>
                             <hr>
                             <img src="egg.png" class="egg">
-                            <span class="card-text">MBTI : ${mbti}</span>
+                            <span class="card-text">MBTI : </span>
+                            <span class="card-text" id="mbti" >${mbti}</span>
                             <hr>
                             <img src="egg.png" class="egg">
-                            <span class="card-text">장점 : ${merit}</span>
+                            <span class="card-text">장점 : </span>
+                            <span class="card-text" id="merit">${merit}</span>
                             <hr>
                             <img src="egg.png" class="egg">
-                            <span class="card-text">협업 : ${collabstyle}</span>
+                            <span class="card-text">협업 스타일 : </span>
+                            <span class="card-text" id="collabstyle">${collabstyle}</span>
                             <hr>
                             <img src="egg.png" class="egg">
-                            <span class="card-text">블로그 : ${blogadr}</span>
+                            <span class="card-text">블로그 : </span>
+                            <span class="card-text" id="blogadr">${blogadr}</span>
                             <hr>
                         </div>
                     </div>
                 </div>`;
             $('#allcard').append(temp_html);
-        }
+        });
 
     </script>
 </head>
@@ -251,17 +325,7 @@
     </header>
     <div class="container">
         <div class="postingbox">
-            <!--
-            <button type = "button" class="photobox">
-                <form method="post" enctype="multipart/form-data">
-                    <div class="fileupload">
-                        <label for="chooseFile">
-                            사진 업로드
-                        </label>
-                    </div>
-                    <input type="file" id="chooseFile" name="chooseFile" accept="image/*" onchange="loadFile(this)">
-            </button>   
-            -->
+            <input type="hidden" id="docId">
             <div class="form-floating mb-3">
                 <input type="email" class="form-control" id="image" placeholder="사진">
                 <label for="floatingInput">사진 링크</label>
@@ -288,142 +352,10 @@
             </div>
             <button type="button" id="postingbtn" class="btn btn-dark" onclick="makeCard()">등록</button>
         </div>
-
+        <!-- 맴버카드 에어리어 -->
         <div class="membercards">
-            <div id = "allcard" class="row row-cols-1 row-cols-md-3 g-4">
-                <div class="col">
-                    <div class="card">
-                        <div class="card-top">
-                            <img src="edit.png" class="topicon" alt="..." onclick="">
-                            <img src="delete.png" class="topicon" alt="..." onclick="">
-                        </div>
-                        <img src="default.png" class="card-img" alt="...">
-                        <div class="card-body">
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">이름 : </span>
-                            <hr>
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">MBTI : </span>
-                            <hr>
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">장점 : </span>
-                            <hr>
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">협업 스타일 : </span>
-                            <hr>
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">블로그 주소 : </span>
-                            <hr>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card">
-                        <div class="card-top">
-                            <img src="edit.png" class="topicon" alt="..." onclick="">
-                            <img src="delete.png" class="topicon" alt="..." onclick="">
-                        </div>
-                        <img src="default.png" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">이름 : </span>
-                            <hr>
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">MBTI : </span>
-                            <hr>
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">장점 : </span>
-                            <hr>
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">협업 스타일 : </span>
-                            <hr>
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">블로그 주소 : </span>
-                            <hr>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card">
-                        <div class="card-top">
-                            <img src="edit.png" class="topicon" alt="..." onclick="">
-                            <img src="delete.png" class="topicon" alt="..." onclick="">
-                        </div>
-                        <img src="default.png" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">이름 : </span>
-                            <hr>
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">MBTI : </span>
-                            <hr>
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">장점 : </span>
-                            <hr>
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">협업 스타일 : </span>
-                            <hr>
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">블로그 주소 : </span>
-                            <hr>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card">
-                        <div class="card-top">
-                            <img src="edit.png" class="topicon" alt="..." onclick="">
-                            <img src="delete.png" class="topicon" alt="..." onclick="">
-                        </div>
-                        <img src="default.png" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">이름 : </span>
-                            <hr>
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">MBTI : </span>
-                            <hr>
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">장점 : </span>
-                            <hr>
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">협업 스타일 : </span>
-                            <hr>
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">블로그 주소 : </span>
-                            <hr>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card">
-                        <div class="card-top">
-                            <img src="edit.png" class="topicon" alt="..." onclick="">
-                            <img src="delete.png" class="topicon" alt="..." onclick="">
-                        </div>
-                        <img src="default.png" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">이름 : </span>
-                            <hr>
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">MBTI : </span>
-                            <hr>
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">장점 : </span>
-                            <hr>
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">협업 스타일 : </span>
-                            <hr>
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">블로그 주소 : </span>
-                            <hr>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div id = "allcard" class="row row-cols-1 row-cols-md-3 g-4"></div>
         </div>
-    </div>
 </body>
 
 </html>
