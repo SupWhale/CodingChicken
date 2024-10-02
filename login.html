@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>로그인페이지</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    
+        
+	</head>
+    <script type="module">
+        // Firebase SDK 라이브러리 가져오기
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getAuth , signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js';
+        // Firebase 구성 정보 설정
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyChB2cWVFFqMKbAeNth9OOfln9qsyoe-0c",
+            authDomain: "sparta-kwon.firebaseapp.com",
+            projectId: "sparta-kwon",
+            storageBucket: "sparta-kwon.appspot.com",
+            messagingSenderId: "205155757728",
+            appId: "1:205155757728:web:392eb31f61b51af5ad63c5",
+            measurementId: "G-2PYRVDC9G4"
+        };
+
+        // Firebase 인스턴스 초기화
+        const app = initializeApp(firebaseConfig);
+        //const db = getFirestore(app);
+        
+        const auth = getAuth(app);
+
+        const user =  auth.currentUser;
+        
+        onAuthStateChanged(auth, (user) => {
+        if (user) {
+            userid();
+            const uid = user.uid;
+            // ...
+        } else {
+            console.log("!!!");
+            }
+        });
+
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+         // Signed in
+        user = userCredential.user;
+        // ...
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+        });
+        //app.initializeApp();
+
+        createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+            // Signed in
+            user = userCredential.user;
+        // ...
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+    // ..
+    });
+
+    function userid(){
+        if (user !== null) {
+            const displayName = user.displayName;
+            const email = user.email;
+            const photoURL = user.photoURL;
+            const emailVerified = user.emailVerified;
+            const uid = user.uid;
+            console.log(displayName);
+            console.log(email);
+        }
+    }
+
+        $("#singupbtn").click(async function () {
+            createUserWithEmailAndPassword(auth, $('#email').val(), $('#password').val());
+
+        })
+      
+        $("#loginbtn").click(async function () {
+           signInWithEmailAndPassword(auth, $('#email').val(), $('#password').val());
+           userid();
+        })
+    
+    
+    </script>
+	<body>
+		<h1>로그인 페이지</h1>
+		<p>ID: <input id="email" type="text"/></p>
+		<p>PW: <input id="password" type="text"/></p>
+		<button id="loginbtn">로그인하기</button>
+        <button id="singupbtn">회원가입하기</button>
+	</body>
+</html>
