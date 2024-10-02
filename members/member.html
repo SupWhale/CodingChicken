@@ -148,6 +148,7 @@
         };
         */
         function makeCard() {
+            let image = $('#image').val();
             let name = $('#name').val();
             let mbti = $('#mbti').val();
             let merit = $('#merit').val();
@@ -161,7 +162,7 @@
                             <img src="edit.png" class="topicon" alt="..." onclick="">
                             <img src="delete.png" class="topicon" alt="..." onclick="">
                         </div>
-                        <img src="default.png" class="card-img-top" alt="...">
+                        <img src="${image}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <img src="egg.png" class="egg">
                             <span class="card-text">이름 : ${name}</span>
@@ -203,6 +204,17 @@
     </div>
     <div class="main">
         <div class="postingbox">
+            <!--
+            <button type = "button" class="photobox">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="fileupload">
+                        <label for="chooseFile">
+                            사진 업로드
+                        </label>
+                    </div>
+                    <input type="file" id="chooseFile" name="chooseFile" accept="image/*" onchange="loadFile(this)">
+            </button>   
+            -->
             <div class="form-floating mb-3">
                 <input type="email" class="form-control" id="image" placeholder="사진">
                 <label for="floatingInput">사진 링크</label>
