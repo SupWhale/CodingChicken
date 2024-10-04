@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>멤버 소개</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        header {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .main {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 48px;
+            color: #343a40;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            margin: 20px auto;
+            max-width: 1400px;
+        }
+
+        .title-section {
+            background-color: #ecf1b7;
+            color: black;
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .content-section {
+            padding: 23px;
+            color: black;
+        }
+
+        .btn-custom {
+            background-color: white;
+            color: black;
+            border: 1px solid #ced4da;
+        }
+
+        .btn-custom:hover {
+            background-color: #e2e6ea;
+        }
+
+        .postingbox {
+            width: 900px;
+            height: 750px;
+            margin: 20px 40px auto 20px;
+            border: 1px solid lightgray;
+            padding: 20px;
+            border-radius: 5px;
+
+            .photobox {
+                width: 100%;
+                height: 35%;
+                border-radius: 5px;
+                border: 1px solid lightgray;
+                margin: 5px auto 20px auto;
+
+            }
+
+            .fileupload {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 100px;
+
+                label {
+                    cursor: pointer;
+                    font-size: 2em;
+                }
+            }
+
+
+            #chooseFile {
+                visibility: hidden;
+            }
+        }
+
+        .postingbox>button {
+            width: 100%;
+            /* 영역 끝까지 넓힌다는 의미 */
+        }
+
+        hr {
+            margin-top: 0.4em;
+            margin-bottom: 0.4em;
+        }
+
+        .image {
+            width: 800px;
+            margin: 20px auto auto 40px;
+
+
+        }
+    </style>
+    <script type="module">
+        // Firebase SDK 라이브러리 가져오기
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { collection, addDoc, setDoc, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+        // Firebase 구성 정보 설정
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyChB2cWVFFqMKbAeNth9OOfln9qsyoe-0c",
+            authDomain: "sparta-kwon.firebaseapp.com",
+            projectId: "sparta-kwon",
+            storageBucket: "sparta-kwon.appspot.com",
+            messagingSenderId: "205155757728",
+            appId: "1:205155757728:web:392eb31f61b51af5ad63c5",
+            measurementId: "G-2PYRVDC9G4"
+        };
+
+        // Firebase 인스턴스 초기화
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        //파이어베이스 수정/저장 처리
+        $("#postingbtn").click(async function () {
+            let docId = $('#docId').val();
+            let image = $('#image').val();
+            let name = $('#name').val();
+            let mbti = $('#mbti').val();
+            let merit = $('#merit').val();
+            let collabstyle = $('#collabstyle').val();
+            let feature = $('#feature').val();
+            let blogadr = $('#blogadr').val();
+            let gitadr = $('#gitadr').val();
+            let nutshell = $('#nutshell').val();
+
+            let result = {
+                'image': image,
+                'name': name,
+                'mbti': mbti,
+                'merit': merit,
+                'collabstyle': collabstyle,
+                'feature': feature,
+                'blogadr': blogadr,
+                'gitadr': gitadr,
+                'nutshell': mutshell,
+            };
+
+            if (docId == null || docId == "") {
+                await addDoc(collection(db, "chickens"), result);
+            } else if (docId != null) {
+                const nweetTextRef = doc(db, "chickens", docId);
+                await updateDoc(nweetTextRef, result);
+            }
+            alert('저장완료!');
+            window.location.reload();
+        });
+
+    </script>
+</head>
+
+<body>
+    <header>
+        <div class="d-flex justify-content-between align-items-center">
+            <h1>코딩치킨</h1>
+            <div class="button-container">
+                <button type="button" onclick="location.href='../CodingChicken_TeamPage/CodingChicken_TeamPage.html'"
+                    class="btn btn-light me-2">팀 소개</button>
+                <button type="button" onclick="location.href='./member.html'" class="btn btn-light">멤버 소개</button>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="image">
+            <img src="../image/MainHomepage.png" alt="chicken house" width="600" height="700">
+        </div>
+        <div class="postingbox">
+            <input type="hidden" id="docId">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="image" placeholder="사진">
+                <label for="floatingInput">사진 링크</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="name" placeholder="이름">
+                <label for="floatingInput">이름</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="mbti" placeholder="MBTI">
+                <label for="floatingInput">MBTI</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="merit" placeholder="자신만의 장점">
+                <label for="floatingInput">자신만의 장점</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="collabstyle" placeholder="자신만의 협업 스타일">
+                <label for="floatingInput">자신만의 협업 스타일</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="feature" placeholder="특징">
+                <label for="floatingInput">특징</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="blogadr" placeholder="name@example.com">
+                <label for="floatingInput">블로그 주소</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="gitadr" placeholder="name@example.com">
+                <label for="floatingInput">깃허브 주소</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="nutshell" placeholder="각오 한마디">
+                <label for="floatingInput">각오 한마디</label>
+            </div>
+            <button type="button" id="postingbtn" class="btn btn-dark">등록</button>
+        </div>
+    </div>
+</body>
+
+</html>
