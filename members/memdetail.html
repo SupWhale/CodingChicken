@@ -31,8 +31,10 @@
         .container {
             background-color: khaki;
             border-radius: 5px;
-            font-size: 14px;
-            line-height: 1;
+            font-size: 15px;
+            line-height: 1.25;
+            width : 70%;
+            height : 70%;
 
             .egg {
                 width: 14px;
@@ -47,15 +49,15 @@
         }
 
         .card-img-top {
-            width: 40%;
+            width: 50%;
+            height : 80%;
             /* 이미지 너비 조정 */
-            margin-right: 20px;
-            /* 간격 추가 */
+            margin-right: 40px;
         }
 
         .card-body {
             flex: 1;
-            /* 남은 공간을 채움 */
+            width : 100px;
         }
     </style>
     <script type="module">
@@ -81,18 +83,17 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // URL에서 쿼리 파라미터 'id'를 가져오는 함수
         function getQueryParam(param) {
             const urlParams = new URLSearchParams(window.location.search); // URL의 쿼리 스트링을 파싱
             return urlParams.get(param); // 해당 파라미터 값을 반환
         }
-
-        //맴버카드 정보 불러오기
         let docs = await getDocs(collection(db, "chickens"));
-        const memberId = getQueryParam('id'); // 'id'라는 쿼리 파라미터를 가져옴
+        // 페이지가 로드되면 'id' 파라미터를 가져옴
+
         docs.forEach((doc) => {
             let row = doc.data();
-            let id = doc.id;
+            let did = doc.id;
+            let memid = getQueryParam('id');
             let image = row['image'];
             let name = row['name'];
             let mbti = row['mbti'];
@@ -106,8 +107,10 @@
             if (image == null || image == "") {
                 image = "./default.png";
             }
-            let temp_html = `
-                    <div class="h-100 p-5 bg-body-tertiary border rounded-3 custom-card" id = "${id}">
+            if (memid == did) {
+
+                let temp_html = `
+                    <div class="h-100 p-5 bg-body-tertiary border rounded-3 custom-card" id = "${memid}">
             <img src="${image}" class="card-img-top" alt="...">
             <div class="card-body">
                 <img src="egg.png" class="egg">
@@ -147,9 +150,9 @@
                 <hr>
                 </div>
                 `;
-            $('#detailcard').append(temp_html);
+                $('#detailcard').append(temp_html);
+            }
 
-           
         });
     </script>
 </head>
