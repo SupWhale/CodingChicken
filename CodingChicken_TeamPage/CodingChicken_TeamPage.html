@@ -15,6 +15,10 @@
 
         header {
             background-color: #fff;
+            background-image: url("../image/MainPageCover.png");
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover; 
             padding: 20px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
@@ -23,7 +27,12 @@
         h1 {
             margin: 0;
             font-size: 48px;
+            text-shadow: -2px 0px #ecf1b7, 0px 2px #ecf1b7, 2px 0px #ecf1b7, 0px -2px #ecf1b7;
             color: #343a40;
+
+            >img {
+                height: 48px;
+            }
         }
 
         .container {
@@ -66,13 +75,17 @@
         }
 
        
+       
     </style>
 </head>
 
 <body>
     <header>
         <div class="d-flex justify-content-between align-items-center">
-            <h1>코딩치킨</h1>
+            <h1>
+                코딩치킨
+            </h1>
+            
             <div class="button-container">
                 <button type="button" onclick="location.href='./CodingChicken_TeamPage.html'" class="btn btn-light me-2">팀 소개</button>
                 <button type="button" onclick="location.href='../members/member.html'" class="btn btn-light">멤버 소개</button>

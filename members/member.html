@@ -17,6 +17,10 @@
 
         header {
             background-color: #fff;
+            background-image: url("../image/MainPageCover.png");
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover; 
             padding: 20px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
@@ -31,7 +35,12 @@
         h1 {
             margin: 0;
             font-size: 48px;
+            text-shadow: -2px 0px #ecf1b7, 0px 2px #ecf1b7, 2px 0px #ecf1b7, 0px -2px #ecf1b7;
             color: #343a40;
+
+            >img {
+                height: 48px;
+            }
         }
 
         .container {
@@ -39,7 +48,7 @@
             flex-direction: row;
             justify-content: center;
             margin: 20px auto;
-            max-width: 1400px;
+            max-width: 100%;
         }
 
         .title-section {
@@ -66,8 +75,8 @@
         }
 
         .postingbox {
-            width: 550px;
-            height: 750px;
+            width: 40%;
+            height: 800px;
             margin: 5px auto 20px 50px;
             border: 1px solid lightgray;
             padding: 20px;
@@ -75,11 +84,9 @@
 
             .photobox {
                 width: 100%;
-                height: 35%;
                 border-radius: 5px;
                 border: 1px solid lightgray;
                 margin: 5px auto 20px auto;
-
             }
 
             .fileupload {
@@ -93,28 +100,27 @@
                     font-size: 2em;
                 }
             }
-
-
             #chooseFile {
                 visibility: hidden;
             }
         }
 
-       
-
         .postingbox>button {
             width: 100%;
+            background-color: #343a40;
+            text-shadow: -1px 0px #ecf1b7, 0px 1px #ecf1b7, 1px 0px #ecf1b7, 0px -1px #ecf1b7;
+            color: #343a40;
             /* 영역 끝까지 넓힌다는 의미 */
         }
 
         .membercards {
-            width: 1050px;
+            width: 65%;
             margin: 5px 20px 20px 20px;
         }
 
         .card {
-            width: 100%;
-            height: 440px;
+            width: 90%;
+            height: 400px;
             font-size: 14px;
             line-height: 1;
             background-color: khaki;
@@ -314,8 +320,6 @@
                             </button>
                             <button type="button" class="expandbtn">
                             </button>
-                            <button type="button" class="editbtn">
-                            </button>
                             <button type="button" class="deletebtn">
                             </button>
                         </div>
@@ -328,18 +332,6 @@
                             <img src="egg.png" class="egg">
                             <span class="card-text">MBTI : </span>
                             <span class="card-text" id="mbti" >${mbti}</span>
-                            <hr>
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">장점 : </span>
-                            <span class="card-text" id="merit">${merit}</span>
-                            <hr>
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">협업 스타일 : </span>
-                            <span class="card-text" id="collabstyle">${collabstyle}</span>
-                            <hr>
-                            <img src="egg.png" class="egg">
-                            <span class="card-text">블로그 : </span>
-                            <span class="card-text" id="blogadr">${blogadr}</span>
                             <hr>
                         </div>
                     </div>
@@ -362,48 +354,13 @@
     </header>
     <div class="container">
         <div class="postingbox">
-            <input type="hidden" id="docId">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="image" placeholder="사진">
-                <label for="floatingInput">사진 링크</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="name" placeholder="이름">
-                <label for="floatingInput">이름</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="mbti" placeholder="MBTI">
-                <label for="floatingInput">MBTI</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="merit" placeholder="자신만의 장점">
-                <label for="floatingInput">자신만의 장점</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="collabstyle" placeholder="자신만의 협업 스타일">
-                <label for="floatingInput">자신만의 협업 스타일</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="feature" placeholder="특징">
-                <label for="floatingInput">특징</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="blogadr" placeholder="name@example.com">
-                <label for="floatingInput">블로그 주소</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="gitadr" placeholder="name@example.com">
-                <label for="floatingInput">깃허브 주소</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="nutshell" placeholder="각오 한마디">
-                <label for="floatingInput">각오 한마디</label>
-            </div>
-            <button type="button" id="postingbtn" class="btn btn-dark">등록</button>
+            <img src="../image/MainHomepage.png" alt="코딩치킨" class="img-fluid">
+            <button type="button" onclick="location.href=''" 
+            class="btn btn-light me-2">맴버카드 등록하기</button>
         </div>
         <!-- 맴버카드 에어리어 -->
         <div class="membercards">
-            <div id = "allcard" class="row row-cols-1 row-cols-md-3 g-4"></div>
+            <div id = "allcard" class="row row-cols-1 row-cols-md-4 g-4"></div>
         </div>
 </body>
 

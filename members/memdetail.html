@@ -17,34 +17,46 @@
 
         header {
             background-color: #fff;
+            background-image: url("../image/MainPageCover.png");
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover; 
             padding: 20px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
 
+
         h1 {
             margin: 0;
             font-size: 48px;
+            text-shadow: -2px 0px #ecf1b7, 0px 2px #ecf1b7, 2px 0px #ecf1b7, 0px -2px #ecf1b7;
             color: #343a40;
+
+            >img {
+                height: 48px;
+            }
         }
 
         .container {
             background-color: khaki;
             border-radius: 5px;
+            border-color : khaki;
             font-size: 20px;
             line-height: 1.25;
             width : 70%;
             height : 70%;
 
             .egg {
-                width: 14px;
-                height: 14px;
+                width: 24px;
+                height: 24px;
             }
         }
 
         .custom-card {
             display: flex;
             align-items: flex-start;
+            border-color: khaki;
             /* 상단에 정렬 */
         }
 
@@ -58,6 +70,7 @@
         .card-body {
             flex: 1;
             padding : 0px;
+            border-color: khaki;
         }
     </style>
     <script type="module">
@@ -109,46 +122,47 @@
             }
             if (memid == did) {
 
-                let temp_html = `
-                    <div class="h-100 p-5 bg-body-tertiary border rounded-3 custom-card" id = "${memid}">
-            <img src="${image}" class="card-img-top" alt="...">
-            <div class="card-body">
-                <img src="egg.png" class="egg">
-                <span class="card-text">이름: </span>
-                <span class="card-text" id="name" value="${name}">${name}</span>
-                <hr>
-                <img src="egg.png" class="egg">
-                <span class="card-text">MBTI : </span>
-                <span class="card-text" id="mbti">${mbti}</span>
-                <hr>
-                <img src="egg.png" class="egg">
-                <span class="card-text">장점 : </span>
-                <span class="card-text" id="merit">${merit}</span>
-                <hr>
-                <img src="egg.png" class="egg">
-                <span class="card-text">협업 스타일 : </span>
-                <span class="card-text" id="collabstyle">${collabstyle}</span>
-                <hr>
-                <!--추가-->
-                <img src="egg.png" class="egg">
-                <span class="card-text">특징 : </span>
-                <span class="card-text" id="feature">${feature}</span>
-                <hr>
-                <img src="egg.png" class="egg">
-                <span class="card-text">블로그 : </span>
-                <span class="card-text" id="blogadr">${blogadr}</span>
-                <hr>
-                <!--추가-->
-                <img src="egg.png" class="egg">
-                <span class="card-text">깃허브 : </span>
-                <span class="card-text" id="gitadr">${gitadr}</span>
-                <hr>
-                <!--추가-->
-                <img src="egg.png" class="egg">
-                <span class="card-text">한마디 : </span>
-                <span class="card-text" id="nutshell">${nutshell}</span>
-                <hr>
-                </div>
+                let temp_html = 
+                `
+                    <div class="h-100 p-5 bg-body-tertiary custom-card" id = "${memid}">
+                        <img src="${image}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <img src="egg.png" class="egg">
+                        <span class="card-text">이름: </span>
+                        <span class="card-text" id="name" value="${name}">${name}</span>
+                        <hr>
+                        <img src="egg.png" class="egg">
+                        <span class="card-text">MBTI : </span>
+                        <span class="card-text" id="mbti">${mbti}</span>
+                        <hr>
+                        <img src="egg.png" class="egg">
+                        <span class="card-text">장점 : </span>
+                        <span class="card-text" id="merit">${merit}</span>
+                        <hr>
+                        <img src="egg.png" class="egg">
+                        <span class="card-text">협업 스타일 : </span>
+                        <span class="card-text" id="collabstyle">${collabstyle}</span>
+                        <hr>
+                        <!--추가-->
+                        <img src="egg.png" class="egg">
+                        <span class="card-text">특징 : </span>
+                        <span class="card-text" id="feature">${feature}</span>
+                        <hr>
+                        <img src="egg.png" class="egg">
+                        <span class="card-text">블로그 : </span>
+                        <span class="card-text" id="blogadr">${blogadr}</span>
+                        <hr>
+                        <!--추가-->
+                        <img src="egg.png" class="egg">
+                        <span class="card-text">깃허브 : </span>
+                        <span class="card-text" id="gitadr">${gitadr}</span>
+                        <hr>
+                        <!--추가-->
+                        <img src="egg.png" class="egg">
+                        <span class="card-text">한마디 : </span>
+                        <span class="card-text" id="nutshell">${nutshell}</span>
+                        <hr>
+                    </div>
                 `;
                 $('#detailcard').append(temp_html);
             }
@@ -169,7 +183,7 @@
         </div>
     </header>
     <div class="container">
-        <div id="detailcard" class="h-100 p-5 bg-body-tertiary border rounded-3 custom-card">
+        <div id="detailcard" class="h-100 p-5 bg-body-tertiary custom-card">
         </div>
     </div>
 
