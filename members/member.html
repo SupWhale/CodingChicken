@@ -67,7 +67,7 @@
 
         .postingbox {
             width: 550px;
-            height: 550px;
+            height: 750px;
             margin: 5px auto 20px 50px;
             border: 1px solid lightgray;
             padding: 20px;
@@ -146,7 +146,18 @@
                 height: 14px;
             }
         }
-
+        .expandbtn{
+               background-image: url("./expand.png");
+               background-repeat: no-repeat;
+               background-position: center center;
+               background-size: cover; 
+               background-color: rgba(0, 0, 0, 0);
+               border: none;
+               width : 15px;
+               height: 15px;
+               margin-right : 2px;
+               margin-top : 2px;
+            }
         .deletebtn{
                 background-image: url("./delete.png");
                 background-repeat: no-repeat;
@@ -203,7 +214,10 @@
             let mbti = $('#mbti').val();
             let merit = $('#merit').val();
             let collabstyle = $('#collabstyle').val();
+            let feature = $('#feature').val(); 
             let blogadr = $('#blogadr').val();
+            let gitadr = $('#gitadr').val();
+            let nutshell = $('#nutshell').val();
             
             let result = {
                 'image': image,
@@ -211,7 +225,10 @@
                 'mbti': mbti,
                 'merit': merit,
                 'collabstyle': collabstyle,
+                'feature':feature,
                 'blogadr': blogadr,
+                'gitadr':gitadr,
+                'nutshell':mutshell,
             };
  
             if(docId == null || docId == ""){
@@ -223,6 +240,14 @@
             alert('저장완료!');
             window.location.reload();
         });
+
+        //상세페이지 이동
+        $('#allcard').on('click', '.expandbtn', async function () {
+            let col = $(this).closest('.col');
+            let docId = col.attr('id');
+            window.location.href = `memdetail.html?id=${docId}`;
+        });
+
 
         //파이어베이스 삭제
         $('#allcard').on('click', '.deletebtn', async function () {
@@ -253,15 +278,18 @@
             $('#mbti').val(result.mbti);
             $('#merit').val(result.merit);
             $('#collabstyle').val(result.collabstyle);
+            $('#feature').val(result.feature);
             $('#blogadr').val(result.blogadr);
+            $('#gitadr').val(result.gitadr);
+            $('#nutshell').val(result.nutshell);
         });
 
         //맴버카드 정보 불러오기
         let docs = await getDocs(collection(db, "chickens"));
             docs.forEach((doc) => {
-
             let row = doc.data();
             let id = doc.id;
+            console.log(id);
             let image = row['image'];
             let name = row['name'];
             let mbti = row['mbti'];
@@ -272,11 +300,13 @@
             if(image == null || image == ""){
                 image = "./default.png";
             }
-
             let temp_html = `
                    <div class="col" id="${id}">
                     <div class="card" id="${id}">
                         <div class="card-top"  id="${id}">
+                            </button>
+                            <button type="button" class="expandㄹbtn">
+                            </button>
                             <button type="button" class="editbtn">
                             </button>
                             <button type="button" class="deletebtn">
@@ -347,8 +377,20 @@
                 <label for="floatingInput">자신만의 협업 스타일</label>
             </div>
             <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="feature" placeholder="특징">
+                <label for="floatingInput">특징</label>
+            </div>
+            <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="blogadr" placeholder="name@example.com">
                 <label for="floatingInput">블로그 주소</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="gitadr" placeholder="name@example.com">
+                <label for="floatingInput">깃허브 주소</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="nutshell" placeholder="각오 한마디">
+                <label for="floatingInput">각오 한마디</label>
             </div>
             <button type="button" id="postingbtn" class="btn btn-dark">등록</button>
         </div>
