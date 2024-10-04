@@ -70,7 +70,14 @@
         .card-body {
             flex: 1;
             padding : 0px;
-            border-color: khaki;
+            border-color: khaki;   
+        }
+        .card-body>button {
+                width: 100%;
+                background-color: #343a40;
+                text-shadow: -1px 0px #ecf1b7, 0px 1px #ecf1b7, 1px 0px #ecf1b7, 0px -1px #ecf1b7;
+                color: #343a40;
+                /* 영역 끝까지 넓힌다는 의미 */
         }
     </style>
     <script type="module">
@@ -162,6 +169,7 @@
                         <span class="card-text">한마디 : </span>
                         <span class="card-text" id="nutshell">${nutshell}</span>
                         <hr>
+                        <button type="button" onclick="location.href='./member.html'" class="btn btn-light me-2">돌아가기</button>
                     </div>
                 `;
                 $('#detailcard').append(temp_html);
@@ -184,7 +192,9 @@
     </header>
     <div class="container">
         <div id="detailcard" class="h-100 p-5 bg-body-tertiary custom-card">
+            
         </div>
+        
     </div>
 
 

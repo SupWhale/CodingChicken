@@ -17,6 +17,10 @@
 
         header {
             background-color: #fff;
+            background-image: url("../image/MainPageCover.png");
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover; 
             padding: 20px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
@@ -28,10 +32,15 @@
             justify-content: center;
         }
 
-        h1 {
+       h1 {
             margin: 0;
             font-size: 48px;
+            text-shadow: -2px 0px #ecf1b7, 0px 2px #ecf1b7, 2px 0px #ecf1b7, 0px -2px #ecf1b7;
             color: #343a40;
+
+            >img {
+                height: 48px;
+            }
         }
 
         .container {
@@ -39,7 +48,8 @@
             flex-direction: row;
             justify-content: center;
             margin: 20px auto;
-            max-width: 1400px;
+            max-width: 1800px;
+            max-height: 1000px;
         }
 
         .title-section {
@@ -66,8 +76,8 @@
         }
 
         .postingbox {
-            width: 900px;
-            height: 750px;
+            width: 600px;
+            max-height: 700px;
             margin: 20px 40px auto 20px;
             border: 1px solid lightgray;
             padding: 20px;
@@ -75,7 +85,7 @@
 
             .photobox {
                 width: 100%;
-                height: 35%;
+                height: 40%;
                 border-radius: 5px;
                 border: 1px solid lightgray;
                 margin: 5px auto 20px auto;
@@ -93,8 +103,6 @@
                     font-size: 2em;
                 }
             }
-
-
             #chooseFile {
                 visibility: hidden;
             }
@@ -102,6 +110,9 @@
 
         .postingbox>button {
             width: 100%;
+            background-color: #343a40;
+            text-shadow: -1px 0px #ecf1b7, 0px 1px #ecf1b7, 1px 0px #ecf1b7, 0px -1px #ecf1b7;
+            color: #343a40;
             /* 영역 끝까지 넓힌다는 의미 */
         }
 
@@ -111,18 +122,18 @@
         }
 
         .image {
-            width: 800px;
+            width: 1000px;
+            height: 100%;
             margin: 20px auto auto 40px;
-
-
         }
+
     </style>
     <script type="module">
         // Firebase SDK 라이브러리 가져오기
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
         import { collection, addDoc, setDoc, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-        import { getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getDocs, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
         // Firebase 구성 정보 설정
         // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -139,6 +150,30 @@
         // Firebase 인스턴스 초기화
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search); // URL의 쿼리 스트링을 파싱
+            return urlParams.get(param); // 해당 파라미터 값을 반환
+        }
+
+        let id = getQueryParam('id');
+
+        if(id != null && id != "" && id != "1"){
+            const docRef = doc(db, "chickens", id);
+            const docs = await getDoc(docRef);
+            let result = docs.data();
+            // 페이지가 로드되면 'id' 파라미터를 가져옴
+            $('#docId').val(getQueryParam('id'));
+            $('#image').val(result.image);
+            $('#name').val(result.name);
+            $('#mbti').val(result.mbti);
+            $('#merit').val(result.merit);
+            $('#collabstyle').val(result.collabstyle);
+            $('#feature').val(result.feature);
+            $('#blogadr').val(result.blogadr);
+            $('#gitadr').val(result.gitadr);
+            $('#nutshell').val(result.nutshell);
+        }
 
         //파이어베이스 수정/저장 처리
         $("#postingbtn").click(async function () {
@@ -162,7 +197,7 @@
                 'feature': feature,
                 'blogadr': blogadr,
                 'gitadr': gitadr,
-                'nutshell': mutshell,
+                'nutshell': nutshell,
             };
 
             if (docId == null || docId == "") {
@@ -173,6 +208,7 @@
             }
             alert('저장완료!');
             window.location.reload();
+            location.href='./member.html';
         });
 
     </script>
@@ -191,7 +227,7 @@
     </header>
     <div class="container">
         <div class="image">
-            <img src="../image/MainHomepage.png" alt="chicken house" width="600" height="700">
+            <img src="../image/MainHomepage.png" alt="chicken house" class="img-fluid">
         </div>
         <div class="postingbox">
             <input type="hidden" id="docId">
@@ -199,16 +235,22 @@
                 <input type="text" class="form-control" id="image" placeholder="사진">
                 <label for="floatingInput">사진 링크</label>
             </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="name" placeholder="이름">
-                <label for="floatingInput">이름</label>
+            <div class="row g-2">
+                <div class="col-md">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="name" placeholder="이름"/>
+                        <label for="floatingInput">이름</label>
+                    </div>    
+                </div>
+                <div class="col-md">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="mbti" placeholder="MBTI"/>
+                        <label for="floatingInput">MBTI</label>
+                    </div>
+                </div>
             </div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="mbti" placeholder="MBTI">
-                <label for="floatingInput">MBTI</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="merit" placeholder="자신만의 장점">
+                <input type="text" class="form-control" id="merit" placeholder="자신만의 장점"/>
                 <label for="floatingInput">자신만의 장점</label>
             </div>
             <div class="form-floating mb-3">
