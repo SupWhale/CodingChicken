@@ -17,15 +17,25 @@
 
         header {
             background-color: #fff;
+            background-image: url("../image/MainPageCover.png");
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover; 
             padding: 20px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
 
+
         h1 {
             margin: 0;
             font-size: 48px;
+            text-shadow: -2px 0px #ecf1b7, 0px 2px #ecf1b7, 2px 0px #ecf1b7, 0px -2px #ecf1b7;
             color: #343a40;
+
+            >img {
+                height: 48px;
+            }
         }
 
         .container {
@@ -114,7 +124,7 @@
 
                 let temp_html = 
                 `
-                    <div class="h-100 p-5 bg-body-tertiary border rounded-3 custom-card" id = "${memid}">
+                    <div class="h-100 p-5 bg-body-tertiary custom-card" id = "${memid}">
                         <img src="${image}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <img src="egg.png" class="egg">
@@ -173,7 +183,7 @@
         </div>
     </header>
     <div class="container">
-        <div id="detailcard" class="h-100 p-5 bg-body-tertiary border rounded-3 custom-card">
+        <div id="detailcard" class="h-100 p-5 bg-body-tertiary custom-card">
         </div>
     </div>
 
