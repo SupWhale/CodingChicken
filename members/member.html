@@ -76,7 +76,7 @@
 
         .postingbox {
             width: 40%;
-            height: 800px;
+            max-height: 848px;
             margin: 5px auto 20px 50px;
             border: 1px solid lightgray;
             padding: 20px;
@@ -164,16 +164,6 @@
                margin-right : 2px;
                margin-top : 2px;
             }
-        .deletebtn{
-                background-image: url("./delete.png");
-                background-repeat: no-repeat;
-                background-position: center center;
-                background-size: cover; 
-                background-color: rgba(0, 0, 0, 0);
-                border: none;
-                width : 15px;
-                height: 15px;
-            }
         .editbtn{
                background-image: url("./edit.png");
                background-repeat: no-repeat;
@@ -183,6 +173,18 @@
                border: none;
                width : 15px;
                height: 15px;
+               margin-right : 2px;
+               margin-top : 2px;
+            }
+        .deletebtn{
+                background-image: url("./delete.png");
+                background-repeat: no-repeat;
+                background-position: center center;
+                background-size: cover; 
+                background-color: rgba(0, 0, 0, 0);
+                border: none;
+                width : 15px;
+                height: 15px;
             }
         hr {
             margin-top: 0.4em;
@@ -247,13 +249,19 @@
             window.location.reload();
         });
 
-        //상세페이지 이동
-        $('#allcard').on('click', '.expandbtn', async function () {
+         //수정페이지 이동
+         $('#allcard').on('click', '.editbtn', async function () {
+            let col = $(this).closest('.col');
+            let memid = col.attr('id');
+            window.location.href = `./posting.html?id=${memid}`;
+        });
+
+         //상세페이지 이동
+         $('#allcard').on('click', '.expandbtn', async function () {
             let col = $(this).closest('.col');
             let memid = col.attr('id');
             window.location.href = `memdetail.html?id=${memid}`;
         });
-
 
         //파이어베이스 삭제
         $('#allcard').on('click', '.deletebtn', async function () {
@@ -268,32 +276,6 @@
             }
         });
         
-        //수정 정보 전달
-        $('#allcard').on('click', '.editbtn', async function () {
-            let col = $(this).closest('.col');
-            let id = col.attr('id');
-            let result = [];
-
-            result['image'] = col.find('.card-img-top').attr('src');
-
-            for(let i=1; i<11; i+=2){
-               let text = col.find('span:eq('+i+')').text();
-               let Id = col.find('span:eq('+i+')').attr('id');
-               result[Id] = text;
-            }
-            
-            $('#docId').val(id);
-            $('#image').val(result.image);
-            $('#name').val(result.name);
-            $('#mbti').val(result.mbti);
-            $('#merit').val(result.merit);
-            $('#collabstyle').val(result.collabstyle);
-            $('#feature').val(result.feature);
-            $('#blogadr').val(result.blogadr);
-            $('#gitadr').val(result.gitadr);
-            $('#nutshell').val(result.nutshell);
-        });
-
         //맴버카드 정보 불러오기
         let docs = await getDocs(collection(db, "chickens"));
             docs.forEach((doc) => {
@@ -319,6 +301,8 @@
                         <div class="card-top"  id="${id}">
                             </button>
                             <button type="button" class="expandbtn">
+                            </button>
+                            <button type="button" class="editbtn">
                             </button>
                             <button type="button" class="deletebtn">
                             </button>
@@ -347,7 +331,7 @@
         <div class="d-flex justify-content-between align-items-center">
                 <h1>코딩치킨</h1>
             <div class="button-container">
-                <button type="button" onclick="location.href='../CodingChicken_TeamPage/CodingChicken_TeamPage.html'" class="btn btn-light me-2">팀 소개</button>
+                <button type="button" onclick="location.href='../CodingChicken_TeamPage/CodingChicken_TeamPage.html'" class="btn btn-light">팀 소개</button>
                 <button type="button" onclick="location.href='./member.html'" class="btn btn-light">멤버 소개</button>
             </div>
         </div>
@@ -355,7 +339,7 @@
     <div class="container">
         <div class="postingbox">
             <img src="../image/MainHomepage.png" alt="코딩치킨" class="img-fluid">
-            <button type="button" onclick="location.href=''" 
+            <button type="button" onclick="location.href='./posting.html?id=1'" 
             class="btn btn-light me-2">맴버카드 등록하기</button>
         </div>
         <!-- 맴버카드 에어리어 -->

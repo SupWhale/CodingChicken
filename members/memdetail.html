@@ -70,7 +70,14 @@
         .card-body {
             flex: 1;
             padding : 0px;
-            border-color: khaki;
+            border-color: khaki;   
+        }
+        .card-body>button {
+                width: 100%;
+                background-color: #343a40;
+                text-shadow: -1px 0px #ecf1b7, 0px 1px #ecf1b7, 1px 0px #ecf1b7, 0px -1px #ecf1b7;
+                color: #343a40;
+                /* 영역 끝까지 넓힌다는 의미 */
         }
     </style>
     <script type="module">
@@ -78,7 +85,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
         import { collection, addDoc, setDoc, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-        import { getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getDocs , getDoc} from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
         // Firebase 구성 정보 설정
         // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -99,8 +106,8 @@
         function getQueryParam(param) {
             const urlParams = new URLSearchParams(window.location.search); // URL의 쿼리 스트링을 파싱
             return urlParams.get(param); // 해당 파라미터 값을 반환
-        }
-        let docs = await getDocs(collection(db, "chickens"));
+            }
+        /* let docs = await getDocs(collection(db, "chickens"));
         // 페이지가 로드되면 'id' 파라미터를 가져옴
 
         docs.forEach((doc) => {
@@ -120,10 +127,26 @@
             if (image == null || image == "") {
                 image = "./default.png";
             }
-            if (memid == did) {
+            if (memid == did) { */  
+            let id = getQueryParam('id');
 
+            if(id != null && id != "" && id != "1"){
+                const docRef = doc(db, "chickens", id);
+                const docs = await getDoc(docRef);
+                let result = docs.data();
+                // 페이지가 로드되면 'id' 파라미터를 가져옴
+                let memid = getQueryParam('id');
+                let image = result.image;
+                let name = result.name;
+                let mbti = result.mbti;
+                let merit = result.merit;
+                let collabstyle = result.collabstyle;
+                let feature = result.feature;
+                let blogadr = result.blogadr;
+                let gitadr = result.gitadr;
+                let nutshell = result.nutshell;      
                 let temp_html = 
-                `
+                    `
                     <div class="h-100 p-5 bg-body-tertiary custom-card" id = "${memid}">
                         <img src="${image}" class="card-img-top" alt="...">
                     <div class="card-body">
@@ -162,12 +185,13 @@
                         <span class="card-text">한마디 : </span>
                         <span class="card-text" id="nutshell">${nutshell}</span>
                         <hr>
+                        <button type="button" onclick="location.href='./member.html'" class="btn btn-light me-2">돌아가기</button>
                     </div>
                 `;
                 $('#detailcard').append(temp_html);
             }
 
-        });
+        //});
     </script>
 </head>
 
@@ -184,7 +208,9 @@
     </header>
     <div class="container">
         <div id="detailcard" class="h-100 p-5 bg-body-tertiary custom-card">
+            
         </div>
+        
     </div>
 
 

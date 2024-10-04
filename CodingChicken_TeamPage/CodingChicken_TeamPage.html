@@ -24,6 +24,12 @@
             margin-bottom: 20px;
         }
 
+        .main {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+
         h1 {
             margin: 0;
             font-size: 48px;
@@ -36,8 +42,11 @@
         }
 
         .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
             margin: 20px auto;
-            max-width: 1400px;
+            max-width: 100%;
         }
 
         .card {
@@ -62,32 +71,16 @@
         .content-section {
             padding: 23px; 
             color: black; 
-        }
-
-        .btn-custom {
-            background-color: white;
-            color: black;
-            border: 1px solid #ced4da;
-        }
-
-        .btn-custom:hover {
-            background-color: #e2e6ea;
-        }
-
-       
-       
+        }       
     </style>
 </head>
 
 <body>
     <header>
         <div class="d-flex justify-content-between align-items-center">
-            <h1>
-                코딩치킨
-            </h1>
-            
+            <h1>코딩치킨</h1>   
             <div class="button-container">
-                <button type="button" onclick="location.href='./CodingChicken_TeamPage.html'" class="btn btn-light me-2">팀 소개</button>
+                <button type="button" onclick="location.href='./CodingChicken_TeamPage.html'" class="btn btn-light">팀 소개</button>
                 <button type="button" onclick="location.href='../members/member.html'" class="btn btn-light">멤버 소개</button>
             </div>
         </div>
