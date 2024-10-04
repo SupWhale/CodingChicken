@@ -130,9 +130,7 @@
             if (memid == did) { */  
             let id = getQueryParam('id');
 
-            if (image == null || image == "") {
-                image = "./default.png";
-            }
+            
 
             if(id != null && id != "" && id != "1"){
                 const docRef = doc(db, "chickens", id);
@@ -140,7 +138,13 @@
                 let result = docs.data();
                 // 페이지가 로드되면 'id' 파라미터를 가져옴
                 let memid = getQueryParam('id');
+
                 let image = result.image;
+                
+                if (image == null || image == "") {
+                    image = "./default.png";
+                }
+                console.log(image);
                 let name = result.name;
                 let mbti = result.mbti;
                 let merit = result.merit;
