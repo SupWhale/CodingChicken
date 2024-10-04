@@ -130,6 +130,10 @@
             if (memid == did) { */  
             let id = getQueryParam('id');
 
+            if (image == null || image == "") {
+                image = "./default.png";
+            }
+
             if(id != null && id != "" && id != "1"){
                 const docRef = doc(db, "chickens", id);
                 const docs = await getDoc(docRef);
