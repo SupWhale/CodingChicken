@@ -244,22 +244,18 @@
         //상세페이지 이동
         $('#allcard').on('click', '.expandbtn', async function () {
             let col = $(this).closest('.col');
-            let docId = col.attr('id');
-            window.location.href = `memdetail.html?id=${docId}`;
+            let memid = col.attr('id');
+            window.location.href = `memdetail.html?id=${memid}`;
         });
 
 
         //파이어베이스 삭제
         $('#allcard').on('click', '.deletebtn', async function () {
-            if(confirm("정말로 맴버카드를 삭제하시겠습니까?")){
-                let col = $(this).closest('.col');
-                let id = col.attr('id');
-                await deleteDoc(doc(db, "chickens", id));
-                alert('삭제 완료!');
-                window.location.reload();
-            }else{
-                return;
-            }
+            let col = $(this).closest('.col');
+            let id = col.attr('id');
+            await deleteDoc(doc(db, "chickens", id));
+            alert('삭제 완료!');
+            window.location.reload();
         });
         
         //수정 정보 전달
@@ -293,13 +289,16 @@
             docs.forEach((doc) => {
             let row = doc.data();
             let id = doc.id;
-            console.log(id);
             let image = row['image'];
             let name = row['name'];
             let mbti = row['mbti'];
             let merit = row['merit'];
+            let feature = row['feature'];
             let collabstyle = row['collabstyle'];
             let blogadr = row['blogadr'];
+            let gitadr = row['gitadr'];
+            let nutshell = row['nutshell']; 
+            
             
             if(image == null || image == ""){
                 image = "./default.png";
